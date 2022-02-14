@@ -98,8 +98,16 @@ final class Server
 	public static function serveRequest(Response $response)
 	{
 		status_header($response->status);
+
 		header("Content-type: application/json");
+
+		foreach ($response->headers as $value) {
+			var_dump($value);
+			header($value);
+		}
+		
 		echo wp_json_encode($response->data);
+
 		exit;
 	}
 }
