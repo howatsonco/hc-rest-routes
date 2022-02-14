@@ -45,41 +45,11 @@ class Controller
   }
 
   /**
-   * Allow CORS.
-   */
-  public static function allowCors()
-  {
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Credentials: true');
-    header('Access-Control-Max-Age: 86400');
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-  }
-
-  /**
-   * Set cache control headers.
-   */
-  public static function setCacheControl($ttl = 300)
-  {
-    header('Cache-Control: public, max-age=' . $ttl);
-  }
-
-  /**
-   * Get Wordpress's Database query object
-   * @return wpdb
-   */
-  public static function getWpQuery()
-  {
-    global $wpdb;
-    /* @var $wpdb wpdb */
-    return $wpdb;
-  }
-
-  /**
    * Validate if current user is admin
    */
   public function validateAdmin()
   {
-    if (!current_user_can('manage_options') && (is_admin() || is_super_admin())) {
+    if (!(current_user_can('manage_options') || is_admin() || is_super_admin())) {
       Server::serveRequest(
         new Response(
           array(
