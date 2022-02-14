@@ -53,4 +53,4 @@ function HCRR()
 }
 
 // Global for backwards compatibility.
-$GLOBALS['hc-rest-routes'] = HCRR();
+$GLOBALS['hcrr'] = HCRR();
