@@ -20,7 +20,7 @@ class Router
   /**
    * List of valid API routes.
    */
-  public $routes = null;
+  public $routes = array();
 
   /**
 	 * Controller factory instance.
@@ -47,7 +47,7 @@ class Router
    */
   public function getPrefix()
   {
-    return (defined('WP_SUBDIRECTORY') ? WP_SUBDIRECTORY : '') . self::$prefix;
+    return (defined('WP_SUBDIRECTORY') ? WP_SUBDIRECTORY : '') . $this->prefix;
   }
 
   /**
@@ -70,7 +70,7 @@ class Router
     if (Utils::startWith($uri, $prefix, false)) {
       $uri = str_replace($prefix, '', $uri);
 
-      foreach (self::$routes as $pattern => $route) {
+      foreach ($this->routes as $pattern => $route) {
         $matches = array();
 
         if (preg_match('#^' . $pattern . '/?(\?.*)?$#', $uri, $matches)) {
@@ -79,6 +79,8 @@ class Router
         }
       }
     }
+
+    Utils::toJsonResponse(array('success' => false), Constants::HTTP_STATUS_NOT_FOUND);
   }
 
   /**
