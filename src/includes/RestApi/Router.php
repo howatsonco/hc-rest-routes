@@ -3,14 +3,14 @@
 namespace HC\RestRoutes\RestApi;
 
 use HC\RestRoutes\RestApi\Factory\ControllerFactory;
-use HC\RestRoutes\SingletonTrait;
+use HC\RestRoutes\Traits\Singleton;
 
 /**
  * Rest API request routing.
  */
 class Router
 {
-  use SingletonTrait;
+  use Singleton;
 
   /**
    * API prefix.
@@ -86,7 +86,7 @@ class Router
    */
   public function executeAction($route, $args = array())
   {
-    $controller = $this->loadController($route['controller']);
+    $controller = $this->controllerFactory->getController($route['controller']);
 
     if ($controller) {
       $action = (isset($route['action']) ? $route['action'] : 'index') . '_' . strtolower($_SERVER['REQUEST_METHOD']);
@@ -95,13 +95,5 @@ class Router
         exit();
       }
     }
-  }
-
-  /**
-   * Loads REST API Controller associated with route.
-   */
-  public function loadController($id)
-  {
-    return $this->controllerFactory->getController($id);
   }
 }

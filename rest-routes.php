@@ -24,20 +24,20 @@
  * Text Domain:       rest-routes
  */
 
-use HC\RestRoutes\RestRoutes;
-
 if (!defined('ABSPATH')) {
-  exit; // Exit if accessed directly.
+	exit; // Exit if accessed directly.
 }
 
 // Define HCRR_PLUGIN_FILE.
 if (!defined('HCRR_PLUGIN_FILE')) {
-  define('HCRR_PLUGIN_FILE', __FILE__);
+	define('HCRR_PLUGIN_FILE', __FILE__);
 }
+
+require dirname( __FILE__ ) . '/vendor/autoload.php';
 
 // Include the main class.
 if (!class_exists('RestRoutes')) {
-  include_once dirname(__FILE__) . '/includes/class-rest-routes.php';
+  include_once dirname(__FILE__) . '/src/includes/RestRoutes.php';
 }
 
 /**
@@ -47,7 +47,7 @@ if (!class_exists('RestRoutes')) {
  */
 function HCRR()
 {
-  return RestRoutes::instance();
+  return HC\RestRoutes\RestRoutes::instance();
 }
 
 // Global for backwards compatibility.

@@ -3,13 +3,17 @@
 namespace HC\RestRoutes\RestApi\Factory;
 
 use HC\RestRoutes\RestApi\Controllers\RestController;
-use HC\RestRoutes\SingletonTrait;
+use HC\RestRoutes\Traits\Singleton;
+
+if (!defined('ABSPATH')) {
+  exit; // Exit if accessed directly.
+}
 
 /**
  * Singleton that registers and instantiates Controller classes.
  */
 final class ControllerFactory {
-	use SingletonTrait;
+	use Singleton;
 
 	/**
 	 * controllers array.

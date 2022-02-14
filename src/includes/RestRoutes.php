@@ -2,7 +2,7 @@
 
 namespace HC\RestRoutes;
 
-use HC\RestRoutes\RestApi\Router;
+use HC\RestRoutes\Traits\Singleton;
 
 if (!defined('ABSPATH')) {
   exit; // Exit if accessed directly.
@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
  */
 final class RestRoutes
 {
-	use SingletonTrait;
+	use Singleton;
 
 	/**
 	 * Router instance.
@@ -79,7 +79,6 @@ final class RestRoutes
 	 * Load REST API.
 	 */
 	public function loadRestApi() {
-		$this->router = Router::instance();
-		$this->router->init();
+		$this->router = \HC\RestRoutes\RestApi\Router::instance();
 	}
 }

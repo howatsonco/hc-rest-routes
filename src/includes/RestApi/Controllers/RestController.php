@@ -2,10 +2,12 @@
 
 namespace HC\RestRoutes\RestApi\Controllers;
 
+use HC\RestRoutes\RestApi\Constants;
+
 /**
  * Rest controller.
  */
-class Controller
+class RestController
 {
   /**
    * API request body.
@@ -79,7 +81,7 @@ class Controller
    * @param $object
    * @param bool $end_execution
    */
-  public static function toJsonResponse($object, $http_code = \Noshu\Constants::HTTP_STATUS_OK, $end_execution = true)
+  public static function toJsonResponse($object, $http_code = Constants::HTTP_STATUS_OK, $end_execution = true)
   {
     http_response_code($http_code);
     header("Content-type: application/json");

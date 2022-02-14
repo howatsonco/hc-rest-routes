@@ -4,7 +4,9 @@
     "type": "wordpress-plugin",
     "autoload": {
         "psr-4": {
-            "Hc\\RestRoutes\\": "src/"
+            "HC\\RestRoutes\\": "src/",
+            "HC\\RestRoutes\\Traits\\": "src/includes/Traits",
+            "HC\\RestRoutes\\RestApi\\": "src/includes/RestApi"
         }
     },
     "require": {}
