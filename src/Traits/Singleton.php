@@ -5,7 +5,8 @@ namespace HC\RestRoutes\Traits;
 /**
  * Singleton trait.
  */
-trait Singleton {
+trait Singleton
+{
 	/**
 	 * The single instance of the class.
 	 *
@@ -18,15 +19,18 @@ trait Singleton {
 	 *
 	 * @return void
 	 */
-	protected function __construct() {}
+	protected function __construct()
+	{
+	}
 
 	/**
 	 * Get class instance.
 	 *
 	 * @return object Instance.
 	 */
-	final public static function instance() {
-		if ( null === static::$instance ) {
+	final public static function instance()
+	{
+		if (null === static::$instance) {
 			static::$instance = new static();
 		}
 		return static::$instance;
@@ -35,10 +39,14 @@ trait Singleton {
 	/**
 	 * Prevent cloning.
 	 */
-	private function __clone() {}
+	private function __clone()
+	{
+	}
 
 	/**
 	 * Prevent unserializing.
 	 */
-	final public function __wakeup() {}
+	final public function __wakeup()
+	{
+	}
 }

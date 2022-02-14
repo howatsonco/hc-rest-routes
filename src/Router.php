@@ -2,7 +2,7 @@
 
 namespace HC\RestRoutes;
 
-use HC\RestRoutes\Factory\ControllerFactory;
+use HC\RestRoutes\Factories\ControllerFactory;
 use HC\RestRoutes\Traits\Singleton;
 
 /**
@@ -23,11 +23,11 @@ class Router
   public $routes = array();
 
   /**
-	 * Controller factory instance.
-	 *
-	 * @var ControllerFactory
-	 */
-	public $controllerFactory = null;
+   * Controller factory instance.
+   *
+   * @var ControllerFactory
+   */
+  public $controllerFactory = null;
 
   /**
    * Router constructor.
@@ -35,28 +35,55 @@ class Router
   public function __construct()
   {
     $this->controllerFactory = new ControllerFactory();
-    $this->routes = apply_filters( 'hcrr_routes', $this->routes );
-    $this->prefix = apply_filters( 'hcrr_prefix', $this->prefix );
-    add_action( 'parse_request', array($this, 'processRequest'), 1 );
-    do_action( 'hcrr_router_init', $this );
+    $this->routes = apply_filters('hcrr_routes', $this->routes);
+    $this->prefix = apply_filters('hcrr_prefix', $this->prefix);
+    add_action('parse_request', array($this, 'processRequest'), 1);
+    do_action('hcrr_router_init', $this);
   }
 
   /**
-   * Returns API prefix.
-   * @return string
+   * Unregister a route.
+   * 
+   * @param string      $pattern  Pattern for route to match.
    */
-  public function getPrefix()
+  public function setPrefix($prefix)
   {
-    return (defined('WP_SUBDIRECTORY') ? WP_SUBDIRECTORY : '') . $this->prefix;
+    $this->prefix = $prefix;
   }
 
   /**
-   * Returns request URI.
-   * @return string
+   * Register all routes.
+   *
+   * @param array      $routes  List of routes to set.
    */
-  public function getUri()
+  public function registerRoutes($routes)
   {
-    return str_replace('//', '/', $_SERVER['REQUEST_URI']);
+    $this->routes = $routes;
+  }
+
+  /**
+   * Register a route.
+   *
+   * @param string      $pattern  Pattern for route to match.
+   * @param string      $controller Key of controller to access.
+   * @param string      $action Name of controller method to invoke.
+   */
+  public function registerRoute($pattern, $controller, $action)
+  {
+    $this->routes[$pattern] = array(
+      'controller' => $controller,
+      'action' => $action
+    );
+  }
+
+  /**
+   * Unregister a route.
+   * 
+   * @param string      $pattern  Pattern for route to match.
+   */
+  public function unregisterRoute($pattern)
+  {
+    unset($this->routes[$pattern]);
   }
 
   /**
@@ -64,8 +91,8 @@ class Router
    */
   public function processRequest()
   {
-    $uri = $this->getUri();
-    $prefix = $this->getPrefix();
+    $uri = str_replace('//', '/', $_SERVER['REQUEST_URI']);
+    $prefix = (defined('WP_SUBDIRECTORY') ? WP_SUBDIRECTORY : '') . $this->prefix;
 
     if (Utils::startWith($uri, $prefix, false)) {
       $uri = str_replace($prefix, '', $uri);
@@ -80,7 +107,33 @@ class Router
       }
     }
 
-    Utils::toJsonResponse(array('success' => false), Constants::HTTP_STATUS_NOT_FOUND);
+    // If we haven't sent a response by this point,
+    // assume that the API endpoint doesn't exist.
+    Server::serveRequest(
+      new Response(
+        array(
+          "success" => false,
+          "message" => "Endpoint does not exist",
+        ),
+        Constants::HTTP_STATUS_NOT_FOUND
+      )
+    );
+  }
+
+  /**
+   * Returns controller instance for route.
+   */
+  public function getController($route)
+  {
+    return $this->controllerFactory->getController($route['controller']);
+  }
+
+  /**
+   * Returns action callback for route.
+   */
+  public function getAction($route)
+  {
+    return (isset($route['action']) ? $route['action'] : 'index') . '_' . strtolower($_SERVER['REQUEST_METHOD']);
   }
 
   /**
@@ -88,14 +141,36 @@ class Router
    */
   public function executeAction($route, $args = array())
   {
-    $controller = $this->controllerFactory->getController($route['controller']);
+    $controller = $this->getController($route);
+    $action = $this->getAction($route);
 
-    if ($controller) {
-      $action = (isset($route['action']) ? $route['action'] : 'index') . '_' . strtolower($_SERVER['REQUEST_METHOD']);
-      call_user_func_array(array($controller, $action), $args);
-      if (!isset($route['continue']) || !filter_var($route['continue'], FILTER_VALIDATE_BOOLEAN)) {
-        exit();
-      }
+    if (!$controller) {
+      Server::serveRequest(
+        new Response(
+          array(
+            "success" => false,
+            "message" => "Controller does not exist",
+          ),
+          Constants::HTTP_STATUS_NOT_FOUND
+        )
+      );
     }
+
+    if (!$action) {
+      Server::serveRequest(
+        new Response(
+          array(
+            "success" => false,
+            "message" => "Action does not exist",
+          ),
+          Constants::HTTP_STATUS_NOT_FOUND
+        )
+      );
+    }
+
+    call_user_func_array(
+      array($controller, $action),
+      $args
+    );
   }
 }

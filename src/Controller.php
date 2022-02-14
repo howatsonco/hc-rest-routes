@@ -1,13 +1,13 @@
 <?php
 
-namespace HC\RestRoutes\Controllers;
+namespace HC\RestRoutes;
 
 use HC\RestRoutes\Utils;
 
 /**
  * Rest controller.
  */
-class RestController
+class Controller
 {
   /**
    * API request body.
@@ -82,12 +82,15 @@ class RestController
   public function validateAdmin()
   {
     if (!current_user_can('manage_options') && (is_admin() || is_super_admin())) {
-      header('HTTP/1.0 403 Forbidden');
-      Utils::toJsonResponse(array(
-        "success" => false,
-        "message" => "Unauthorized",
-      ));
-      exit;
+      Server::serveRequest(
+        new Response(
+          array(
+            "success" => false,
+            "message" => "Unauthorized",
+          ),
+          Constants::HTTP_STATUS_FORBIDDEN
+        )
+      );
     }
   }
 
@@ -97,33 +100,15 @@ class RestController
   public function validateEditor()
   {
     if (!(current_user_can('editor') || current_user_can('manage_options'))) {
-      header('HTTP/1.0 403 Forbidden');
-      Utils::toJsonResponse(array(
-        "success" => false,
-        "message" => "Unauthorized",
-      ));
-      exit;
+      Server::serveRequest(
+        new Response(
+          array(
+            "success" => false,
+            "message" => "Unauthorized",
+          ),
+          Constants::HTTP_STATUS_FORBIDDEN
+        )
+      );
     }
   }
-
-  /**
-   * Example API endpoint
-   * 
-   * The function name should be split into two parts: ${name}_${httpVerb}.
-   * 
-   * You can use the utility function Utils::toJsonResponse to format the response as JSON.
-   *
-   * public function example_get($region)
-   * {
-   *   $query = new \WP_Query([
-   *     'post_status' => 'publish',
-   *     'post_type' => array('post'),
-   *   ]);
-   * 
-   *   return Utils::toJsonResponse(array(
-   *     'region' => $region,
-   *     'results' => $query->posts,
-   *   ));
-   * }
-   */
 }
