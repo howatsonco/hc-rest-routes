@@ -1,11 +1,11 @@
 
 
-## Introduction
+# Introduction
 
 A plugin for custom API routing. Made with love by Howatson+Co.
 
 
-## Usage
+# Usage
 
 There are two parts to using this plugin:
 1. Defining API routes
@@ -22,7 +22,7 @@ global $hcrr;
 ```
 
 
-### Defining Routes
+## Defining Routes
 
 You can define a route through the `registerRoute` method attached to the `Router` class, like so:
 ```
@@ -34,7 +34,7 @@ The `registerRoute` method takes three arguments:
 - Name of Controller to instantiate.
 - Name of method attached to Controller to execute.
 
-### Defining Controllers
+## Defining Controllers
 
 When defining Controllers, adhere to the following rules:
 - The controller must extend `HC\RestRoutes\Controller`
@@ -67,14 +67,14 @@ class TestController extends HC\RestRoutes\Controller
 - `Status code` - HTTP status code to attach to the response. (default `200`)
 - `Headers` - Any additional headers to attach to the response. (default `array()`)
 
-### Full example
+## Full example
 
 Bringing it all together, an example could look like this:
 
 ```
-class  TestController  extends HC\RestRoutes\Controller
+class TestController extends HC\RestRoutes\Controller
 {
-  public  function  index_get()
+  public function index_get()
   {
     HC\RestRoutes\Server::serveRequest(
       new HC\RestRoutes\Response(
