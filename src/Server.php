@@ -99,7 +99,7 @@ final class Server
 	{
 		status_header($response->status);
 		header("Content-type: application/json");
-		echo wp_json_encode($response);
+		echo wp_json_encode($response->data);
 		exit;
 	}
 }
