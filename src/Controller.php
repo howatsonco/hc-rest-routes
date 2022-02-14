@@ -2,8 +2,6 @@
 
 namespace HC\RestRoutes;
 
-use HC\RestRoutes\Utils;
-
 /**
  * Rest controller.
  */

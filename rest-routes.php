@@ -13,7 +13,7 @@
  * @package           rest-routes
  *
  * @wordpress-plugin
- * Plugin Name:       rest-routes
+ * Plugin Name:       Rest Routes
  * Plugin URI:        rest-routes
  * Description:       H+C Custom REST API router
  * Version:           1.0.0
