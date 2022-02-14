@@ -102,7 +102,6 @@ final class Server
 		header("Content-type: application/json");
 
 		foreach ($response->headers as $value) {
-			var_dump($value);
 			header($value);
 		}
 		
