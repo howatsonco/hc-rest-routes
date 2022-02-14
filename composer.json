@@ -1,0 +1,11 @@
+{
+    "name": "hc/rest-routes",
+    "description": "Rest API Routes for Wordpress.",
+    "type": "wordpress-plugin",
+    "autoload": {
+        "psr-4": {
+            "Hc\\RestRoutes\\": "src/"
+        }
+    },
+    "require": {}
+}
