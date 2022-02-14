@@ -67,6 +67,12 @@ class TestController extends HC\RestRoutes\Controller
 - `Status code` - HTTP status code to attach to the response. (default `200`)
 - `Headers` - Any additional headers to attach to the response. (default `array()`)
 
+Then, to register the Controller we can use the `ControllerFactory` class `register` method:
+
+```
+$server->router->controllerFactory->register("\TestController");
+```
+
 ## Full example
 
 Bringing it all together, an example could look like this:
