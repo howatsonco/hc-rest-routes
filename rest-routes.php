@@ -37,11 +37,6 @@ if (!defined('HCRR_PLUGIN_FILE')) {
 
 require dirname( __FILE__ ) . '/vendor/autoload.php';
 
-// Include the main class.
-if (!class_exists('Server')) {
-  include_once dirname(__FILE__) . '/src/Server.php';
-}
-
 /**
  * Returns the main instance of HCRR to prevent the need to use globals.
  *
