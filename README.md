@@ -48,17 +48,17 @@ See example below:
 ```
 class TestController extends HC\RestRoutes\Controller
 {
-	public function index_get()
-	{
-		HC\RestRoutes\Server::serveRequest(
-			new HC\RestRoutes\Response(
-				array(
-					"success" => true,
-					"message" => "custom controller has been applied!"
-				)
-			)
-		);
-	}
+  public function index_get()
+  {
+    HC\RestRoutes\Server::serveRequest(
+      new HC\RestRoutes\Response(
+        array(
+          "success" => true,
+          "message" => "custom controller has been applied!"
+        )
+      )
+    );
+  }
 }
 ```
 
