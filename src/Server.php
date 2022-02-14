@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 /**
  * The core plugin class.
  */
-final class RestRoutes
+final class Server
 {
 	use Singleton;
 
@@ -79,6 +79,6 @@ final class RestRoutes
 	 * Load REST API.
 	 */
 	public function loadRestApi() {
-		$this->router = \HC\RestRoutes\RestApi\Router::instance();
+		$this->router = Router::instance();
 	}
 }

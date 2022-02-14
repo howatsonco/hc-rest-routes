@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'HC\\RestRoutes\\Traits\\' => array($baseDir . '/src/includes/Traits'),
-    'HC\\RestRoutes\\RestApi\\' => array($baseDir . '/src/includes/RestApi'),
+    'HC\\RestRoutes\\Traits\\' => array($baseDir . '/src/Traits'),
     'HC\\RestRoutes\\' => array($baseDir . '/src'),
 );

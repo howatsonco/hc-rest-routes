@@ -1,6 +1,6 @@
 <?php
 
-namespace HC\RestRoutes\RestApi;
+namespace HC\RestRoutes;
 
 /**
  * Rest API constants.

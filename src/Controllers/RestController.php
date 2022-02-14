@@ -1,8 +1,8 @@
 <?php
 
-namespace HC\RestRoutes\RestApi\Controllers;
+namespace HC\RestRoutes\Controllers;
 
-use HC\RestRoutes\RestApi\Utils;
+use HC\RestRoutes\Utils;
 
 /**
  * Rest controller.

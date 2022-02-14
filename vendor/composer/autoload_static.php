@@ -10,7 +10,6 @@ class ComposerStaticInitc768768840eb5999ca9912bd3a54e3ad
         'H' => 
         array (
             'HC\\RestRoutes\\Traits\\' => 21,
-            'HC\\RestRoutes\\RestApi\\' => 22,
             'HC\\RestRoutes\\' => 14,
         ),
     );
@@ -18,11 +17,7 @@ class ComposerStaticInitc768768840eb5999ca9912bd3a54e3ad
     public static $prefixDirsPsr4 = array (
         'HC\\RestRoutes\\Traits\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src/includes/Traits',
-        ),
-        'HC\\RestRoutes\\RestApi\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src/includes/RestApi',
+            0 => __DIR__ . '/../..' . '/src/Traits',
         ),
         'HC\\RestRoutes\\' => 
         array (

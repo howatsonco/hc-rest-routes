@@ -1,8 +1,8 @@
 <?php
 
-namespace HC\RestRoutes\RestApi\Factory;
+namespace HC\RestRoutes\Factory;
 
-use HC\RestRoutes\RestApi\Controllers\RestController;
+use HC\RestRoutes\Controllers\RestController;
 use HC\RestRoutes\Traits\Singleton;
 
 if (!defined('ABSPATH')) {

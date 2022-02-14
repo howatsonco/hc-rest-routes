@@ -5,8 +5,7 @@
     "autoload": {
         "psr-4": {
             "HC\\RestRoutes\\": "src/",
-            "HC\\RestRoutes\\Traits\\": "src/includes/Traits",
-            "HC\\RestRoutes\\RestApi\\": "src/includes/RestApi"
+            "HC\\RestRoutes\\Traits\\": "src/Traits"
         }
     },
     "require": {}

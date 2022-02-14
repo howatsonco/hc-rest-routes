@@ -1,8 +1,8 @@
 <?php
 
-namespace HC\RestRoutes\RestApi;
+namespace HC\RestRoutes;
 
-use HC\RestRoutes\RestApi\Factory\ControllerFactory;
+use HC\RestRoutes\Factory\ControllerFactory;
 use HC\RestRoutes\Traits\Singleton;
 
 /**
