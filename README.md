@@ -97,3 +97,15 @@ $server = HCRR();
 $server->router->controllerFactory->register("\TestController");
 $server->router->registerRoute("/test", "\TestController", "index");
 ```
+
+## Extra
+
+### Authorisation
+
+To ensure an endpoint only gives the full payload to a user who is authorised, you can use the `validateAdmin` and `validateEditor` methods which are attached to the `HC\RestRoutes\Controller` class.
+
+### Response Headers
+
+The `HC\RestRoutes\Response` class has two functions that ease setting headers:
+- `allowCors` - Sets the necessary headers to allow CORS. Optionally takes an `$origin` argument to define which origins are allowed.
+- `setCacheControl` - Defines the cache for the response.
