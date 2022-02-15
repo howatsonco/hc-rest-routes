@@ -2,6 +2,7 @@
     "name": "hc/rest-routes",
     "description": "Rest API Routes for Wordpress.",
     "type": "wordpress-plugin",
+    "license": "gpl-2.0-or-later",
     "autoload": {
         "psr-4": {
             "HC\\RestRoutes\\": "src/"
