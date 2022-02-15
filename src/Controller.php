@@ -24,7 +24,7 @@ class Controller
    * Retrieves request body in object format.
    * @return object
    */
-  public static function getRequestBody()
+  private function getRequestBody()
   {
     $request = $_REQUEST;
 

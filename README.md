@@ -26,7 +26,7 @@ global $hcrr;
 
 You can define a route through the `registerRoute` method attached to the `Router` class, like so:
 ```
-$hcrr->router->registerRoute("/test", "\TestController", "index");
+$server->router->registerRoute("/test", "\TestController", "index");
 ```
 
 The `registerRoute` method takes three arguments: 
@@ -109,3 +109,10 @@ To ensure an endpoint only gives the full payload to a user who is authorised, y
 The `HC\RestRoutes\Response` class has two functions that ease setting headers:
 - `allowCors` - Sets the necessary headers to allow CORS. Optionally takes an `$origin` argument to define which origins are allowed.
 - `setCacheControl` - Defines the cache for the response.
+
+### Defining API prefix
+
+The default API prefix is `/api/hcrr`. You can customise this by using the `setPrefix` method on the `HC\RestRoutes\Router` class:
+```
+$server->router->setPrefix("/your/custom/prefix");
+```

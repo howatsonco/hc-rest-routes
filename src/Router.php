@@ -105,19 +105,19 @@ class Router
           $this->executeAction($route, $matches);
         }
       }
-    }
 
-    // If we haven't sent a response by this point,
-    // assume that the API endpoint doesn't exist.
-    Server::serveRequest(
-      new Response(
-        array(
-          "success" => false,
-          "message" => "Endpoint does not exist",
-        ),
-        Constants::HTTP_STATUS_NOT_FOUND
-      )
-    );
+      // If we haven't sent a response by this point,
+      // assume that the API endpoint doesn't exist.
+      Server::serveRequest(
+        new Response(
+          array(
+            "success" => false,
+            "message" => "Endpoint does not exist",
+          ),
+          Constants::HTTP_STATUS_NOT_FOUND
+        )
+      );
+    }
   }
 
   /**
