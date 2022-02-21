@@ -1,16 +1,20 @@
 <?php
 
-namespace HC\RestRoutes;
+namespace HC\RestRoutes\Abstracts;
+
+use HC\RestRoutes\Exceptions\ForbiddenException;
 
 /**
  * Rest controller.
  */
-class Controller
+abstract class ControllerAbstract
 {
   /**
    * API request body.
    */
   protected $request = array();
+
+  protected $response = null;
 
   /**
    * Handle Controller setup.
@@ -47,36 +51,20 @@ class Controller
   /**
    * Validate if current user is admin
    */
-  public function validateAdmin()
+  protected function validateAdmin()
   {
     if (!(current_user_can('manage_options') || is_admin() || is_super_admin())) {
-      Server::serveRequest(
-        new Response(
-          array(
-            "success" => false,
-            "message" => "Unauthorized",
-          ),
-          Constants::HTTP_STATUS_FORBIDDEN
-        )
-      );
+      throw new ForbiddenException("Unauthorized");
     }
   }
 
   /**
    * Validate if current user is an editor
    */
-  public function validateEditor()
+  protected function validateEditor()
   {
     if (!(current_user_can('editor') || current_user_can('manage_options'))) {
-      Server::serveRequest(
-        new Response(
-          array(
-            "success" => false,
-            "message" => "Unauthorized",
-          ),
-          Constants::HTTP_STATUS_FORBIDDEN
-        )
-      );
+      throw new ForbiddenException("Unauthorized");
     }
   }
 }

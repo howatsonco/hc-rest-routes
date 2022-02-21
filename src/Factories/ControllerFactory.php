@@ -2,15 +2,15 @@
 
 namespace HC\RestRoutes\Factories;
 
-use HC\RestRoutes\Controller;
-use HC\RestRoutes\Traits\Singleton;
+use HC\RestRoutes\Abstracts\ControllerAbstract;
+use HC\RestRoutes\Traits\SingletonTrait;
 
 /**
  * Singleton that registers and instantiates Controller classes.
  */
 final class ControllerFactory
 {
-	use Singleton;
+	use SingletonTrait;
 
 	/**
 	 * controllers array.
@@ -32,7 +32,7 @@ final class ControllerFactory
 	 */
 	public function register($controller)
 	{
-		if ($controller instanceof Controller) {
+		if ($controller instanceof ControllerAbstract) {
 			$this->controllers[spl_object_hash($controller)] = $controller;
 		} else {
 			$this->controllers[$controller] = new $controller();
@@ -46,7 +46,7 @@ final class ControllerFactory
 	 */
 	public function unregister($controller)
 	{
-		if ($controller instanceof Controller) {
+		if ($controller instanceof ControllerAbstract) {
 			unset($this->controllers[spl_object_hash($controller)]);
 		} else {
 			unset($this->controllers[$controller]);

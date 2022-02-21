@@ -37,37 +37,37 @@ The `registerRoute` method takes three arguments:
 ## Defining Controllers
 
 When defining Controllers, adhere to the following rules:
-- The controller must extend `HC\RestRoutes\Controller`
+- The controller must extend `\HC\RestRoutes\Abstracts\ControllerAbstract`
 - Controller methods should be named `${name}_${httpVerb}`, where:
 	- `name` is the name you pass to the route, and
 	- `httpVerb` is the HTTP verb of the request (e.g `GET`, `POST`, `PUT`, etc)
-- Use `HC\RestRoutes\Server::serveRequest` to send an API response
+- `Return` the data you want to respond with.
+- Throw a `RestfulException` provided by the `RestRoutes` plugin to handle exceptions.
 
 See example below:
 
 ```
-class TestController extends HC\RestRoutes\Controller
+class TestController extends \HC\RestRoutes\Abstracts\ControllerAbstract
 {
   public function index_get()
   {
-    HC\RestRoutes\Server::serveRequest(
-      new HC\RestRoutes\Response(
-        array(
-          "success" => true,
-          "message" => "custom controller has been applied!"
-        )
-      )
-    );
+    $posts = get_posts();
+
+    // This will send a 200 response to the client side
+    // with the data payload attached
+    if (!empty($posts)) {
+      return $posts;
+    }
+
+    // Otherwise, you can handle exceptions like this
+    throw new \HC\RestRoutes\Exceptions\NotFoundException("No posts found.");
   }
 }
 ```
 
-`HC\RestRoutes\Response` takes three arguments:
-- `Data` - Data to be sent through
-- `Status code` - HTTP status code to attach to the response. (default `200`)
-- `Headers` - Any additional headers to attach to the response. (default `array()`)
+Next, we will need to register the controller.
 
-Then, to register the Controller we can use the `ControllerFactory` class `register` method:
+To register the Controller, use the `ControllerFactory` class `register` method:
 
 ```
 $server->router->controllerFactory->register("\TestController");
@@ -78,18 +78,20 @@ $server->router->controllerFactory->register("\TestController");
 Bringing it all together, an example could look like this:
 
 ```
-class TestController extends HC\RestRoutes\Controller
+class TestController extends \HC\RestRoutes\Abstracts\ControllerAbstract
 {
   public function index_get()
   {
-    HC\RestRoutes\Server::serveRequest(
-      new HC\RestRoutes\Response(
-        array(
-          "success" => true,
-          "message" => "custom controller has been applied!"
-        )
-      )
-    );
+    $posts = get_posts();
+
+    // This will send a 200 response to the client side
+    // with the data payload attached
+    if (!empty($posts)) {
+      return $posts;
+    }
+
+    // Otherwise, you can handle exceptions like this
+    throw new \HC\RestRoutes\Exceptions\NotFoundException("No posts found.");
   }
 }
 
@@ -102,17 +104,11 @@ $server->router->registerRoute("/test", "\TestController", "index");
 
 ### Authorisation
 
-To ensure an endpoint only gives the full payload to a user who is authorised, you can use the `validateAdmin` and `validateEditor` methods which are attached to the `HC\RestRoutes\Controller` class.
-
-### Response Headers
-
-The `HC\RestRoutes\Response` class has two functions that ease setting headers:
-- `allowCors` - Sets the necessary headers to allow CORS. Optionally takes an `$origin` argument to define which origins are allowed.
-- `setCacheControl` - Defines the cache for the response.
+To ensure an endpoint only gives the full payload to a user who is authorised, you can use the `validateAdmin` and `validateEditor` methods which are attached to the `\HC\RestRoutes\Abstracts\ControllerAbstract` class.
 
 ### Defining API prefix
 
-The default API prefix is `/api/hcrr`. You can customise this by using the `setPrefix` method on the `HC\RestRoutes\Router` class:
+The default API prefix is `/api/hcrr`. You can customise this by using the `setPrefix` method on the `\HC\RestRoutes\Router` class:
 ```
 $server->router->setPrefix("/your/custom/prefix");
 ```

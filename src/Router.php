@@ -2,15 +2,18 @@
 
 namespace HC\RestRoutes;
 
+use HC\RestRoutes\Exceptions\InternalServerException;
+use HC\RestRoutes\Exceptions\NotFoundException;
+use HC\RestRoutes\Exceptions\RestfulException;
 use HC\RestRoutes\Factories\ControllerFactory;
-use HC\RestRoutes\Traits\Singleton;
+use HC\RestRoutes\Traits\SingletonTrait;
 
 /**
  * Rest API request routing.
  */
-class Router
+final class Router
 {
-  use Singleton;
+  use SingletonTrait;
 
   /**
    * API prefix.
@@ -91,32 +94,45 @@ class Router
    */
   public function processRequest()
   {
-    $uri = str_replace('//', '/', $_SERVER['REQUEST_URI']);
-    $prefix = (defined('WP_SUBDIRECTORY') ? WP_SUBDIRECTORY : '') . $this->prefix;
+    try {
+      $uri = str_replace('//', '/', $_SERVER['REQUEST_URI']);
+      $prefix = (defined('WP_SUBDIRECTORY') ? WP_SUBDIRECTORY : '') . $this->prefix;
 
-    if (Utils::startWith($uri, $prefix, false)) {
-      $uri = str_replace($prefix, '', $uri);
+      if (Utils::startWith($uri, $prefix, false)) {
+        $uri = str_replace($prefix, '', $uri);
 
-      foreach ($this->routes as $pattern => $route) {
-        $matches = array();
+        foreach ($this->routes as $pattern => $route) {
+          $matches = array();
 
-        if (preg_match('#^' . $pattern . '/?(\?.*)?$#', $uri, $matches)) {
-          array_shift($matches);
-          $this->executeAction($route, $matches);
+          if (preg_match('#^' . $pattern . '/?(\?.*)?$#', $uri, $matches)) {
+            array_shift($matches);
+            
+            $data = $this->executeAction($route, $matches);
+
+            if (!isset($data) || empty($data)) {
+              throw new InternalServerException("Internal server error");
+            }
+
+            return Server::serveRequest(
+              new Response(
+                array(
+                  "success" => true,
+                  "data" => $data
+                )
+              )
+            );
+          }
         }
-      }
 
-      // If we haven't sent a response by this point,
-      // assume that the API endpoint doesn't exist.
-      Server::serveRequest(
-        new Response(
-          array(
-            "success" => false,
-            "message" => "Endpoint does not exist",
-          ),
-          Constants::HTTP_STATUS_NOT_FOUND
-        )
-      );
+        // If we haven't sent a response by this point,
+        // assume that the API endpoint doesn't exist.
+        throw new NotFoundException("Endpoint does not exist");
+      }
+    } catch (RestfulException $e) {
+      $e->outputError();
+    } catch (\Exception $e) {
+      // TODO: Reminder to handle Internal Server Errors here.
+      throw $e;
     }
   }
 
@@ -145,30 +161,14 @@ class Router
     $action = $this->getAction($route);
 
     if (!$controller) {
-      Server::serveRequest(
-        new Response(
-          array(
-            "success" => false,
-            "message" => "Controller does not exist",
-          ),
-          Constants::HTTP_STATUS_NOT_FOUND
-        )
-      );
+      throw new NotFoundException("Controller does not exist");
     }
 
     if (!$action) {
-      Server::serveRequest(
-        new Response(
-          array(
-            "success" => false,
-            "message" => "Action does not exist",
-          ),
-          Constants::HTTP_STATUS_NOT_FOUND
-        )
-      );
+      throw new NotFoundException("Action does not exist");
     }
 
-    call_user_func_array(
+    return call_user_func_array(
       array($controller, $action),
       $args
     );

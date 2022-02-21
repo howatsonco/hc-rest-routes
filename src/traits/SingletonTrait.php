@@ -5,7 +5,7 @@ namespace HC\RestRoutes\Traits;
 /**
  * Singleton trait.
  */
-trait Singleton
+trait SingletonTrait
 {
 	/**
 	 * The single instance of the class.

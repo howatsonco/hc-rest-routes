@@ -14,10 +14,10 @@
  *
  * @wordpress-plugin
  * Plugin Name:       H+C Rest Routes
- * Plugin URI:        hc-rest-routes
- * Description:       H+C Custom REST API router
- * Version:           1.0.0
- * Author:            Howatsonco
+ * Plugin URI:        https://github.com/howatsonco/hc-rest-routes
+ * Description:       H+C REST API router
+ * Version:           1.0.1
+ * Author:            Howatson + Co
  * Author URI:        howatsonco.com.au
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
